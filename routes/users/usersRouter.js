@@ -1,4 +1,5 @@
 const express = require('express')
+const { register } = require('../../controllers/users/usersCtlr')
 
 const usersRouter = express.Router()
 
