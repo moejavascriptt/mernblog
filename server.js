@@ -9,6 +9,8 @@ const app = express()
 //db connect
 connectDB()
 
+//middlewares
+app.use(express.json()) //pass incoming data
 // routes
 app.use('/', usersRouter)
 

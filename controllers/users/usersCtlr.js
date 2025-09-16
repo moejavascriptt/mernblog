@@ -1,9 +1,39 @@
 // @desc Register a new user
-//@route POST /api/v1/users/register 
+//@route POST /api/v1/users/register
 //@access public
 
-exports.register = async(req, res)=>{
-    res.json({
-        message: 'User registration controller',
+const User = require('../../model/User/User')
+
+exports.register = async (req, res) => {
+  console.log(req.body)
+  try {
+    // get the details
+    const { username, password, email } = req.body
+    // check if user exists
+    const user = await User.findOne({ username })
+    if (user) {
+      throw new Error('User already exists')
+    }
+    // register new user
+    const newUser = new User({
+      username,
+      email,
+      password
     })
+    // save
+    await newUser.save()
+    res.status(201).json({
+      status: 'success',
+      message: 'User registered successfully',
+      _id: newUser?._id,
+      username: newUser?.username,
+      email: newUser?.email,
+      role: newUser?.role
+    })
+  } catch (error) {
+    res.json({
+      status: 'failed',
+      message: error?.message
+    })
+  }
 }
