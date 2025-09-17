@@ -80,3 +80,22 @@ exports.login = async (req, res) => {
     })
   }
 }
+
+// @desc get profile
+//@route POST /api/v1/users/profile/:id
+//@access private
+
+exports.getProfile = async (req, res) => {
+  try {
+    res.json({
+      status: 'success',
+      message: 'Profile fetched',
+      data: 'user data'
+    })
+  } catch (error) {
+    res.json({
+      status: 'failed',
+      message: error?.message
+    })
+  }
+}

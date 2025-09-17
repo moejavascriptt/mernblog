@@ -12,7 +12,7 @@ connectDB()
 //middlewares
 app.use(express.json()) //pass incoming data
 // routes
-app.use('/', usersRouter)
+app.use('/api/v1/users', usersRouter)
 
 const server = http.createServer(app)
 // ? start the server
