@@ -2,6 +2,7 @@ const http = require('http')
 const express = require('express')
 const usersRouter = require('./routes/users/usersRouter')
 const connectDB = require('./config/database')
+const { notFound, globalErrHandler } = require('./middlewares/globalErrorHandler')
 
 // !server
 
@@ -14,24 +15,11 @@ app.use(express.json()) //pass incoming data
 // routes
 app.use('/api/v1/users', usersRouter)
 // not found middleware
-app.use((req, res, next) => {
-  const err = new Error(`Cannot find ${req.originalUrl} on the server`)
-  next(err)
-})
+app.use(notFound)
+
 // ERROR MIDDLEWARE
 // status
-app.use((err, req, res, next) => {
-  const status = err?.status ? err?.status : 'failed'
-  // message
-  const message = err?.message
-  // stack
-  const stack = err?.stack
-  res.status(500).json({
-    status,
-    message,
-    stack
-  })
-})
+app.use(globalErrHandler)
 
 const server = http.createServer(app)
 // ? start the server
