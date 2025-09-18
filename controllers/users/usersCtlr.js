@@ -85,8 +85,10 @@ exports.login = async (req, res) => {
 //@route POST /api/v1/users/profile/:id
 //@access private
 
-exports.getProfile = async (req, res) => {
-  // console.log(req.userAuth)
+exports.getProfile = async (req, res, next) => {
+  // trigger custom
+  const myErr = new Error('my custom error')
+  return next(myErr)
   try {
     // get user id from params
 

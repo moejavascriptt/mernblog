@@ -13,6 +13,20 @@ connectDB()
 app.use(express.json()) //pass incoming data
 // routes
 app.use('/api/v1/users', usersRouter)
+// ERROR MIDDLEWARE
+// status
+app.use((err, req, res, next) => {
+  const status = err?.status ? err?.status : 'failed'
+  // message
+  const message = err?.message
+  // stack
+  const stack = err?.stack
+  res.status(500).json({
+    status,
+    message,
+    stack
+  })
+})
 
 const server = http.createServer(app)
 // ? start the server
