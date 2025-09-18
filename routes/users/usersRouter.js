@@ -6,8 +6,6 @@ const {
 } = require('../../controllers/users/usersCtlr')
 const isLoggedIn = require('../../middlewares/isLoggedin')
 
-
-
 const usersRouter = express.Router()
 
 //!register
@@ -17,7 +15,7 @@ usersRouter.post('/register', register)
 usersRouter.post('/login', login)
 
 //profile
-usersRouter.get('/profile/:id', isLoggedIn, getProfile)
+usersRouter.get('/profile/', isLoggedIn, getProfile)
 
 // * export
 module.exports = usersRouter
