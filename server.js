@@ -13,6 +13,11 @@ connectDB()
 app.use(express.json()) //pass incoming data
 // routes
 app.use('/api/v1/users', usersRouter)
+// not found middleware
+app.use((req, res, next) => {
+  const err = new Error(`Cannot find ${req.originalUrl} on the server`)
+  next(err)
+})
 // ERROR MIDDLEWARE
 // status
 app.use((err, req, res, next) => {
