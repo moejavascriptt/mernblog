@@ -33,3 +33,38 @@ exports.getCategories = asyncHandler(async (req, res) => {
     categories
   })
 })
+
+//@desc delete categories
+//@route delete /api/v1/categories/:id
+//@access private
+
+exports.deleteCategory = asyncHandler(async (req, res) => {
+  await Category.findByIdAndDelete(req.params.id)
+
+  res.status(201).json({
+    status: 'success',
+    message: 'Categories successfully deleted'
+  })
+})
+
+//@desc update category
+//@route put /api/v1/categories/:id
+//@access private
+
+exports.updateCategory = asyncHandler(async (req, res) => {
+  const category = await Category.findByIdAndUpdate(
+    req.params.id,
+    {
+      name: req.body.name
+    },
+    {
+      new: true,
+      runValidators: true
+    }
+  )
+
+  res.status(201).json({
+    status: 'success',
+    message: 'Categories successfully updated'
+  })
+})
