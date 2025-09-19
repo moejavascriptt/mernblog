@@ -4,10 +4,11 @@ const mongoose = require('mongoose')
 
 const categorySchema = new mongoose.Schema(
   {
-    title: {
+    name: {
       type: String,
       required: true
     },
+
     author: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -19,12 +20,10 @@ const categorySchema = new mongoose.Schema(
       default: 0
     },
 
-
-
     posts: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post',
-      }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Post'
+    }
   },
   {
     timestamps: true

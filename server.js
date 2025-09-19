@@ -2,7 +2,11 @@ const http = require('http')
 const express = require('express')
 const usersRouter = require('./routes/users/usersRouter')
 const connectDB = require('./config/database')
-const { notFound, globalErrHandler } = require('./middlewares/globalErrorHandler')
+const {
+  notFound,
+  globalErrHandler
+} = require('./middlewares/globalErrorHandler')
+const categoryRouter = require('./routes/category/categoryRouter')
 
 // !server
 
@@ -14,6 +18,7 @@ connectDB()
 app.use(express.json()) //pass incoming data
 // routes
 app.use('/api/v1/users', usersRouter)
+app.use('/api/v1/categories', categoryRouter)
 // not found middleware
 app.use(notFound)
 
