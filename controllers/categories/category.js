@@ -19,3 +19,17 @@ exports.createCategory = asyncHandler(async (req, res) => {
     category
   })
 })
+
+//@desc get all categories
+//@route get /api/v1/categories
+//@access public
+
+exports.getCategories = asyncHandler(async (req, res) => {
+  const categories = await Category.find({})
+
+  res.status(201).json({
+    status: 'success',
+    message: 'Categories successfully fetched',
+    categories
+  })
+})
