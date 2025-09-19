@@ -50,3 +50,58 @@ exports.createPost = asyncHandler(async (req, res) => {
     post
   })
 })
+
+//@ desc get all posts
+//@route GET /api/v1/posts
+//@access PUBLIC
+
+exports.getPosts = asyncHandler(async (req, res) => {
+  const posts = await Post.find({})
+  res.status(201).json({
+    status: 'success',
+    message: 'Posts successfully fetched',
+    posts
+  })
+})
+
+//@desc get single posts
+//@route GET /api/v1/posts/:id
+//@access PUBLIC
+
+exports.getPost = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id)
+  res.status(201).json({
+    status: 'success',
+    message: 'Post successfully fetched',
+    post
+  })
+})
+
+//@delete post
+//@route delete /api/v1/posts/:id
+//@access private
+
+exports.deletePost = asyncHandler(async (req, res) => {
+  await Post.findByIdAndDelete(req.params.id)
+  res.status(201).json({
+    status: 'success',
+    message: 'Post successfully deleted'
+  })
+})
+
+//@desc update post
+//@route put /api/v1/posts/:id
+//@access private
+
+exports.updatePost = asyncHandler(async (req, res) => {
+  const post = await Post.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  })
+
+  res.status(201).json({
+    status: 'success',
+    message: 'post successfully updated',
+    post
+  })
+})
