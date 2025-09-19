@@ -1,3 +1,5 @@
+const dotenv = require('dotenv')
+dotenv.config()
 const http = require('http')
 const express = require('express')
 const usersRouter = require('./routes/users/usersRouter')
@@ -11,6 +13,7 @@ const categoryRouter = require('./routes/category/categoryRouter')
 // !server
 
 const app = express()
+console.log((process.env.MYENV = 'EMMA'))
 //db connect
 connectDB()
 
