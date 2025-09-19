@@ -9,11 +9,12 @@ const {
   globalErrHandler
 } = require('./middlewares/globalErrorHandler')
 const categoryRouter = require('./routes/category/categoryRouter')
+const postsRouter = require('./routes/post/postRouter')
+require("./config/database")
 
 // !server
 
 const app = express()
-console.log((process.env.MYENV = 'EMMA'))
 //db connect
 connectDB()
 
@@ -22,6 +23,7 @@ app.use(express.json()) //pass incoming data
 // routes
 app.use('/api/v1/users', usersRouter)
 app.use('/api/v1/categories', categoryRouter)
+app.use('/api/v1/posts', postsRouter)
 // not found middleware
 app.use(notFound)
 
