@@ -10,7 +10,8 @@ const {
 } = require('./middlewares/globalErrorHandler')
 const categoryRouter = require('./routes/category/categoryRouter')
 const postsRouter = require('./routes/post/postRouter')
-require("./config/database")
+const commentRouter = require('./routes/comment/commentRouter')
+require('./config/database')
 
 // !server
 
@@ -24,6 +25,7 @@ app.use(express.json()) //pass incoming data
 app.use('/api/v1/users', usersRouter)
 app.use('/api/v1/categories', categoryRouter)
 app.use('/api/v1/posts', postsRouter)
+app.use('/api/v1/comments', commentRouter)
 // not found middleware
 app.use(notFound)
 
