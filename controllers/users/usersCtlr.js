@@ -110,7 +110,7 @@ exports.blockUser = asyncHandler(async (req, res) => {
   }
 
   // find the current user
-  const currentUser = await User.findById(userIdToBlock)
+  const currentUser = await User.findById(userBlocking)
 
   //? Check if user already blocked
   if (currentUser?.blockedUsers?.includes(userIdToBlock)) {
