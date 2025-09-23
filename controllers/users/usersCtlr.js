@@ -124,3 +124,34 @@ exports.blockUser = asyncHandler(async (req, res) => {
     status: 'success'
   })
 })
+
+//@desc unblock user
+//@route PUT /api/v1/users/unblock/:userIdToUnblock
+//@access private
+
+exports.unblockUser = asyncHandler(async (req, res) => {
+  // find the user to be unblocked
+  const userIdToUnBlock = req.params.userIdToUnBlock
+  const userToUnBlock = await User.findById(userIdToUnBlock)
+  if (!userToUnBlock) {
+    throw new Error('User to be unblocked is not found')
+  }
+  //find the current user
+  const userUnBlocking = req.userAuth._id
+  const currentUser = await User.findById(userUnBlocking)
+
+  //? Check if user is not blocked before unblocking
+  if (!currentUser.blockedUsers.includes(userIdToUnBlock)) {
+    throw new Error('User is not blocked')
+  }
+  //remove the user from the current user blocked users array
+  currentUser.blockedUsers = currentUser.blockedUsers.filter(
+    id => id.toString() !== userIdToUnBlock.toString()
+  )
+  // resave the current user
+  await currentUser.save()
+  res.json({
+    status: 'success',
+    message: 'User unblocked successfully'
+  })
+})
