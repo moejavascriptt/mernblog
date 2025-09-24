@@ -155,3 +155,32 @@ exports.unblockUser = asyncHandler(async (req, res) => {
     message: 'User unblocked successfully'
   })
 })
+
+//@desc who view my profile
+//@route POST /api/v1/users/profile-viewer/:userProfileId
+//@access private
+
+exports.profileViewers = asyncHandler(async (req, res) => {
+  // find that we want to view profile
+
+  const userProfileId = req.params.userProfileId
+
+  const userProfile = await User.findById(userProfileId)
+  if (!userProfile) {
+    throw new Error('User to view his profile not found')
+  }
+
+  // find the current user
+  const currentUserId = req.userAuth._id
+  //? Check if user already viewed the profile
+  if (userProfile?.profileViewers?.includes(currentUserId)) {
+    throw new Error('You have already viewed this profile')
+  }
+  // push the user current user id into the user profile
+  userProfile.profileViewers.push(currentUserId)
+  await userProfile.save()
+  res.json({
+    message: 'You have successfully viewed the profile',
+    status: 'success'
+  })
+})
