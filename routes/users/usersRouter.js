@@ -5,7 +5,8 @@ const {
   getProfile,
   blockUser,
   unblockUser,
-  profileViewers
+  profileViewers,
+  followingUser
 } = require('../../controllers/users/usersCtlr')
 const isLoggedIn = require('../../middlewares/isLoggedIn')
 
@@ -18,13 +19,15 @@ usersRouter.post('/register', register)
 usersRouter.post('/login', login)
 
 //profile
-usersRouter.get('/profile/', isLoggedIn, getProfile)
+usersRouter.get('/profile', isLoggedIn, getProfile)
 // block user
 usersRouter.put('/block/:userIdToBlock', isLoggedIn, blockUser)
 // unblock user
 usersRouter.put('/unblock/:userIdToUnBlock', isLoggedIn, unblockUser)
 
 usersRouter.get('/profileviewer/:userProfileId', isLoggedIn, profileViewers)
+
+usersRouter.put('/following/:usertoFollowId', isLoggedIn, followingUser)
 
 // * export
 module.exports = usersRouter

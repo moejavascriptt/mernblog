@@ -72,15 +72,9 @@ exports.login = asyncHandler(async (req, res) => {
 //@access private
 
 exports.getProfile = asyncHandler(async (req, res, next) => {
-  // trigger custom
-  const myErr = new Error('my custom error')
-  return next(myErr)
   // get user id from params
-
   const id = req.userAuth._id
   const user = await User.findById(id)
-  console.log(user)
-
   res.json({
     status: 'success',
     message: 'Profile fetched',
@@ -192,21 +186,35 @@ exports.profileViewers = asyncHandler(async (req, res) => {
 exports.followingUser = asyncHandler(async (req, res) => {
   // find the current user
   const currentUserId = req.userAuth._id
-  //! find the user to follow
+  // find the user to follow
   const userToFollowId = req.params.userToFollowId
   // avoid user following himself
-  if (currentUserId.toString() === userToFollowId.toString()) {
+  // fixed toString() error i was getting in postman, already says userToFollowId is a string already
+  // so i didnt have to convert it?
+  if (currentUserId.toString() === userToFollowId) {
     throw new Error('You cannot follow yourself')
   }
 
   //push the user to followID into the current user following field
-  await User.findByIdAndUpdate(currentUserId, {
-    $addToSet: { following: userToFollowId }
-  })
+  await User.findByIdAndUpdate(
+    currentUserId,
+    {
+      $addToSet: { following: userToFollowId }
+    },
+    {
+      new: true
+    }
+  )
   //push the currentUserId into the user to follow followers field
-  await User.findByIdAndUpdate(currentUserId, {
-    $addToSet: { following: currentUserId }
-  })
+  await User.findByIdAndUpdate(
+    userToFollowId,
+    {
+      $addToSet: { followers: currentUserId }
+    },
+    {
+      new: true
+    }
+  )
 
   // send the response
   res.json({
