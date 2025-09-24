@@ -184,3 +184,33 @@ exports.profileViewers = asyncHandler(async (req, res) => {
     status: 'success'
   })
 })
+
+//@desc following user
+//@route PUT /api/v1/useres/following/:userIdToFollow
+//@access private
+
+exports.followingUser = asyncHandler(async (req, res) => {
+  // find the current user
+  const currentUserId = req.userAuth._id
+  //! find the user to follow
+  const userToFollowId = req.params.userToFollowId
+  // avoid user following himself
+  if (currentUserId.toString() === userToFollowId.toString()) {
+    throw new Error('You cannot follow yourself')
+  }
+
+  //push the user to followID into the current user following field
+  await User.findByIdAndUpdate(currentUserId, {
+    $addToSet: { following: userToFollowId }
+  })
+  //push the currentUserId into the user to follow followers field
+  await User.findByIdAndUpdate(currentUserId, {
+    $addToSet: { following: currentUserId }
+  })
+
+  // send the response
+  res.json({
+    status: 'success',
+    message: 'You followed the user successfully'
+  })
+})
