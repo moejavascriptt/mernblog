@@ -13,7 +13,7 @@ const postsRouter = require('./routes/post/postRouter')
 const commentRouter = require('./routes/comment/commentRouter')
 const sendEmail = require('./utils/sendEmail')
 require('./config/database')
-sendEmail('mauriceg5@yahoo.com', 'some message')
+// sendEmail('mauriceg5@yahoo.com', 'some message')
 
 // !server
 

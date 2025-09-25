@@ -6,6 +6,8 @@ const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
 const User = require('../../model/User/User')
 const generateToken = require('../../utils/generateToken')
+const expressAsyncHandler = require('express-async-handler')
+const sendEmail = require('../../utils/sendEmail')
 
 exports.register = asyncHandler(async (req, res) => {
   // get the details
@@ -221,4 +223,26 @@ exports.followingUser = asyncHandler(async (req, res) => {
     status: 'success',
     message: 'You followed the user successfully'
   })
+})
+
+// @route POST /api/v1/users/forgot-password
+// @desc forgot password
+//@access public
+
+exports.forgotpassword = expressAsyncHandler(async (req, res) => {
+  const { email } = req.body
+  // find the email in our db
+  const userFound = await User.findOne({ email })
+
+  if (!userFound) {
+    throw new Error("There's No Email In Our System")
+  }
+  // create token
+  const resetToken = await userFound.generatePasswordResetToken()
+  // resave the user
+  await userFound.save()
+
+  // send email
+  sendEmail(email, resetToken)
+  res.status(200).json({ message: 'Password reset email sent' }0000000000000000000000000)
 })
