@@ -11,7 +11,9 @@ const {
 const categoryRouter = require('./routes/category/categoryRouter')
 const postsRouter = require('./routes/post/postRouter')
 const commentRouter = require('./routes/comment/commentRouter')
+const sendEmail = require('./utils/sendEmail')
 require('./config/database')
+sendEmail('atom@gmail.com', "kekrkek")
 
 // !server
 
